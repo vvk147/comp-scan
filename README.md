@@ -195,6 +195,8 @@ Built in Rust. 3 MB binary. Cross-platform (macOS, Linux, Windows). Single datab
 ## Full Documentation
 
 - **[User Guide](docs/USER_GUIDE.md)** — Detailed walkthrough with real scenarios
+- **[Architecture](docs/ARCHITECTURE.md)** — System design, data flow, project structure
+- **[Documentation index](docs/README.md)** — List of all docs (users, contributors, internal)
 - **[Contributing](CONTRIBUTING.md)** — How to add rules, actions, and features
 - **[Security](SECURITY.md)** — Security model and vulnerability reporting
 - **[Changelog](CHANGELOG.md)** — Release history

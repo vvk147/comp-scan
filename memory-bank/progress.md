@@ -15,13 +15,22 @@
 - [x] Memory bank documentation
 
 ## In Progress
-- [ ] First GitHub push and release
+- [ ] Wire Ollama (HybridAI) into report pipeline
+- [ ] Use encryption layer for DB read/write when enabled
 
 ## Remaining
 - [ ] Unit tests
 - [ ] Integration tests
+- [ ] TUI Settings tab (plan specified 5 tabs)
+- [ ] WebSocket for web dashboard real-time updates
+- [ ] Optional: GPU in system snapshot, network config snapshot
+- [ ] Optional: Active window tracking (platform APIs)
+- [ ] Optional: `notify` crate for file watcher; wire system notifications on new insights
 - [ ] Plugin system
 - [ ] Trend visualization
 - [ ] Browser extension integration
-- [ ] Installer scripts
+- [ ] Installer scripts (install.sh exists)
 - [ ] crates.io publish
+
+## Plan vs implementation
+- See **docs/PLAN_AUDIT.md** for full audit (missing/partial items, doc checklist, todo status).
