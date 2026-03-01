@@ -1,0 +1,39 @@
+---
+description: CompScan project rules for Cursor AI
+globs: ["**/*.rs"]
+---
+
+# CompScan Cursor Rules
+
+## Project Type
+Rust CLI/TUI/Web application — local AI system agent.
+
+## Critical Rules
+- NEVER add network calls to external servers. Only localhost:11434 (Ollama) is allowed.
+- NEVER add telemetry, analytics, or tracking.
+- ALWAYS use `anyhow::Result` for error handling. Never `unwrap()` in production code.
+- ALWAYS ensure cross-platform compatibility (macOS, Linux, Windows).
+- ALWAYS run `cargo fmt` and `cargo clippy` before suggesting commits.
+
+## Code Patterns
+- Use `#[cfg(target_os = "...")]` for platform-specific code.
+- Use `tracing` for logging, not `println!` (except CLI output).
+- Follow conventional commits: `feat:`, `fix:`, `docs:`, `refactor:`.
+- Data models live in `src/storage/models.rs`.
+- Rules live in `src/analyzer/rules.rs`.
+- Actions live in `src/actions/`.
+
+## Architecture
+- `scanner/` scans system state
+- `observer/` tracks activity over time
+- `analyzer/` generates insights from data
+- `ai/` routes between rule engine and Ollama
+- `actions/` executes improvements with permission gates
+- `storage/` persists everything in redb
+- `ui/tui/` and `ui/web/` present data
+
+## Risk Levels for Actions
+- Low: auto-approvable (cache cleanup)
+- Medium: needs notification (startup changes)
+- High: needs explicit confirmation (file deletion)
+- Critical: blocked, manual only (system files)

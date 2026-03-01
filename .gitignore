@@ -1,0 +1,41 @@
+# Rust build artifacts
+/target/
+**/*.rs.bk
+*.pdb
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# CompScan data (never commit user data)
+/data/
+*.db
+*.redb
+
+# Local author mapping (do not commit)
+.mailmap
+
+# Environment
+.env
+.env.*
+
+# Logs
+*.log
+/logs/
+
+# Coverage
+/coverage/
+lcov.info
+tarpaulin-report.html
+
+# Profiling
+perf.data
+flamegraph.svg

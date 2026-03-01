@@ -1,0 +1,33 @@
+# CompScan — Project Intelligence
+
+## What This Project Is
+CompScan is a fully local AI agent built in Rust that observes system activity, detects patterns, and suggests actionable improvements. It runs entirely on the user's machine with zero network egress.
+
+## Key Architecture Decisions
+- Rust chosen for performance, safety, and cross-platform support
+- redb (not sled) for embedded database — stable 1.0, ACID, pure Rust
+- Hybrid AI: rule engine (fast, zero-cost) + Ollama (deep reasoning, optional)
+- Trust-level permission system for actions (Low/Medium/High/Critical)
+- TUI (ratatui) + Web (axum with embedded HTML) dual dashboard
+
+## Critical Boundaries
+- NO network calls except localhost Ollama (127.0.0.1:11434)
+- NO telemetry, analytics, or data collection beyond local storage
+- NO unsafe code without explicit justification
+- ALL new features must be cross-platform or clearly gated with cfg
+
+## Common Patterns
+- Models in `src/storage/models.rs`, database in `src/storage/db.rs`
+- Rules in `src/analyzer/rules.rs` — follow existing Insight pattern
+- Actions in `src/actions/` — always set appropriate RiskLevel
+- Platform code uses `#[cfg(target_os = "...")]`
+- Error handling: `anyhow::Result` for apps, `thiserror` for library errors
+
+## Build & Test
+```
+cargo build                    # Debug build
+cargo build --release          # Optimized release
+cargo test                     # Run tests
+cargo clippy -- -D warnings    # Lint
+cargo fmt                      # Format
+```
