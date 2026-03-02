@@ -11,9 +11,9 @@ pub async fn run_action(action: &Action) -> Result<String> {
         ActionCommand::KillProcess(pid) => kill_process(*pid),
         ActionCommand::DeleteFiles(paths) => delete_files(paths),
         ActionCommand::DisableStartupItem(name) => disable_startup(name),
-        ActionCommand::Custom(description) => {
-            Ok(format!("Custom action noted: {description}. Manual execution required."))
-        }
+        ActionCommand::Custom(description) => Ok(format!(
+            "Custom action noted: {description}. Manual execution required."
+        )),
     }
 }
 

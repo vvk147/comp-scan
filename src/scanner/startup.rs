@@ -105,7 +105,11 @@ fn scan_linux_systemd() -> Result<Vec<StartupItem>> {
                 let path = entry.path();
                 if path.extension().map(|e| e == "service").unwrap_or(false) {
                     items.push(StartupItem {
-                        name: path.file_stem().unwrap_or_default().to_string_lossy().to_string(),
+                        name: path
+                            .file_stem()
+                            .unwrap_or_default()
+                            .to_string_lossy()
+                            .to_string(),
                         path: path.to_string_lossy().to_string(),
                         enabled: true,
                         source: StartupSource::SystemdUser,
@@ -116,7 +120,14 @@ fn scan_linux_systemd() -> Result<Vec<StartupItem>> {
     }
 
     let output = std::process::Command::new("systemctl")
-        .args(["--user", "list-unit-files", "--type=service", "--state=enabled", "--no-pager", "--no-legend"])
+        .args([
+            "--user",
+            "list-unit-files",
+            "--type=service",
+            "--state=enabled",
+            "--no-pager",
+            "--no-legend",
+        ])
         .output();
 
     if let Ok(output) = output {
@@ -142,7 +153,10 @@ fn scan_windows_startup() -> Result<Vec<StartupItem>> {
     let mut items = Vec::new();
 
     let output = std::process::Command::new("reg")
-        .args(["query", r"HKCU\Software\Microsoft\Windows\CurrentVersion\Run"])
+        .args([
+            "query",
+            r"HKCU\Software\Microsoft\Windows\CurrentVersion\Run",
+        ])
         .output();
 
     if let Ok(output) = output {
@@ -166,9 +180,7 @@ fn scan_windows_startup() -> Result<Vec<StartupItem>> {
 fn scan_crontab() -> Result<Vec<StartupItem>> {
     let mut items = Vec::new();
 
-    let output = std::process::Command::new("crontab")
-        .arg("-l")
-        .output();
+    let output = std::process::Command::new("crontab").arg("-l").output();
 
     if let Ok(output) = output {
         if output.status.success() {

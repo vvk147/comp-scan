@@ -1,7 +1,7 @@
 pub mod scheduler;
 
-use anyhow::Result;
 use crate::storage::Database;
+use anyhow::Result;
 
 pub async fn show_status(db: &Database) -> Result<()> {
     let config = db.get_config()?;
@@ -17,7 +17,10 @@ pub async fn show_status(db: &Database) -> Result<()> {
     println!("  Ollama:      {}", config.ollama_endpoint);
 
     if let Some(snap) = snapshot {
-        println!("\n  Last scan:   {}", snap.timestamp.format("%Y-%m-%d %H:%M:%S UTC"));
+        println!(
+            "\n  Last scan:   {}",
+            snap.timestamp.format("%Y-%m-%d %H:%M:%S UTC")
+        );
         println!("  Host:        {}", snap.hostname);
         println!("  OS:          {} {}", snap.os_name, snap.os_version);
         let mem_pct = snap.used_memory_bytes as f64 / snap.total_memory_bytes.max(1) as f64 * 100.0;

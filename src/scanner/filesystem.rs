@@ -1,6 +1,6 @@
 use anyhow::Result;
 use bytesize::ByteSize;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use walkdir::WalkDir;
 
 pub struct DiskReport {
@@ -104,8 +104,14 @@ pub fn deep_scan() -> Result<DiskReport> {
 }
 
 pub fn print_summary(report: &DiskReport) {
-    println!("  Temp files:  {} reclaimable", ByteSize(report.total_temp_size));
-    println!("  Cache dirs:  {} reclaimable", ByteSize(report.total_cache_size));
+    println!(
+        "  Temp files:  {} reclaimable",
+        ByteSize(report.total_temp_size)
+    );
+    println!(
+        "  Cache dirs:  {} reclaimable",
+        ByteSize(report.total_cache_size)
+    );
 
     if !report.cache_dirs.is_empty() {
         println!("\n  Largest cache directories:");
@@ -159,7 +165,7 @@ fn get_temp_directories() -> Vec<PathBuf> {
     dirs
 }
 
-fn get_cache_directories(home: &PathBuf) -> Vec<PathBuf> {
+fn get_cache_directories(home: &Path) -> Vec<PathBuf> {
     let mut dirs = Vec::new();
 
     let candidates = [
@@ -200,7 +206,11 @@ fn get_cache_directories(home: &PathBuf) -> Vec<PathBuf> {
 
 fn dir_size(path: &PathBuf, max_depth: usize) -> Result<u64> {
     let mut total = 0u64;
-    for entry in WalkDir::new(path).max_depth(max_depth).into_iter().flatten() {
+    for entry in WalkDir::new(path)
+        .max_depth(max_depth)
+        .into_iter()
+        .flatten()
+    {
         if entry.file_type().is_file() {
             if let Ok(meta) = entry.metadata() {
                 total += meta.len();
@@ -213,7 +223,11 @@ fn dir_size(path: &PathBuf, max_depth: usize) -> Result<u64> {
 fn dir_size_and_count(path: &PathBuf, max_depth: usize) -> (u64, usize) {
     let mut total = 0u64;
     let mut count = 0usize;
-    for entry in WalkDir::new(path).max_depth(max_depth).into_iter().flatten() {
+    for entry in WalkDir::new(path)
+        .max_depth(max_depth)
+        .into_iter()
+        .flatten()
+    {
         if entry.file_type().is_file() {
             if let Ok(meta) = entry.metadata() {
                 total += meta.len();

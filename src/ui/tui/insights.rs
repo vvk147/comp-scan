@@ -11,9 +11,11 @@ pub fn render(f: &mut Frame, area: Rect, app: &App) {
         .border_style(Style::default().fg(Color::Magenta));
 
     if app.insights.is_empty() {
-        let paragraph = Paragraph::new("No insights yet. Run `compscan scan` or `compscan report` to generate insights.")
-            .block(block)
-            .style(Style::default().fg(Color::DarkGray));
+        let paragraph = Paragraph::new(
+            "No insights yet. Run `compscan scan` or `compscan report` to generate insights.",
+        )
+        .block(block)
+        .style(Style::default().fg(Color::DarkGray));
         f.render_widget(paragraph, area);
         return;
     }
@@ -23,7 +25,9 @@ pub fn render(f: &mut Frame, area: Rect, app: &App) {
         .iter()
         .map(|i| {
             let severity_style = match i.severity {
-                InsightSeverity::Critical => Style::default().fg(Color::Red).add_modifier(Modifier::BOLD),
+                InsightSeverity::Critical => {
+                    Style::default().fg(Color::Red).add_modifier(Modifier::BOLD)
+                }
                 InsightSeverity::Warning => Style::default().fg(Color::Yellow),
                 InsightSeverity::Suggestion => Style::default().fg(Color::Cyan),
                 InsightSeverity::Info => Style::default().fg(Color::Blue),

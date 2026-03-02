@@ -7,8 +7,8 @@ pub fn render(f: &mut Frame, area: Rect, app: &App) {
     let chunks = Layout::default()
         .direction(Direction::Vertical)
         .constraints([
-            Constraint::Length(8),  // system info
-            Constraint::Length(8),  // resource bars
+            Constraint::Length(8), // system info
+            Constraint::Length(8), // resource bars
             Constraint::Min(5),    // recent activity
         ])
         .split(area);
@@ -43,16 +43,17 @@ fn render_system_info(f: &mut Frame, area: Rect, app: &App) {
             ]),
             Line::from(vec![
                 Span::styled("Tracked:  ", Style::default().fg(Color::Cyan)),
-                Span::raw(format!("{} activities, {} insights", app.activity_count, app.insight_count)),
+                Span::raw(format!(
+                    "{} activities, {} insights",
+                    app.activity_count, app.insight_count
+                )),
             ]),
         ]
     } else {
-        vec![
-            Line::from(Span::styled(
-                "No system snapshot available. Run `compscan scan` first.",
-                Style::default().fg(Color::Yellow),
-            )),
-        ]
+        vec![Line::from(Span::styled(
+            "No system snapshot available. Run `compscan scan` first.",
+            Style::default().fg(Color::Yellow),
+        ))]
     };
 
     let block = Block::default()
@@ -106,10 +107,7 @@ fn render_resources(f: &mut Frame, area: Rect, app: &App) {
                 ),
                 Span::raw(format!("{:.0}% ", pct * 100.0)),
                 Span::raw(make_bar(pct, 30)),
-                Span::raw(format!(
-                    " {:.1}GB free",
-                    disk.available_bytes as f64 / 1e9
-                )),
+                Span::raw(format!(" {:.1}GB free", disk.available_bytes as f64 / 1e9)),
             ]));
         }
 
@@ -130,9 +128,10 @@ fn render_recent_activity(f: &mut Frame, area: Rect, app: &App) {
         .border_style(Style::default().fg(Color::Yellow));
 
     if app.activities.is_empty() {
-        let paragraph = Paragraph::new("No activity recorded yet. Run `compscan observe` to start tracking.")
-            .block(block)
-            .style(Style::default().fg(Color::DarkGray));
+        let paragraph =
+            Paragraph::new("No activity recorded yet. Run `compscan observe` to start tracking.")
+                .block(block)
+                .style(Style::default().fg(Color::DarkGray));
         f.render_widget(paragraph, area);
         return;
     }

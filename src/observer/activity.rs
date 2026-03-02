@@ -22,7 +22,12 @@ pub fn collect_activity_snapshot() -> Result<ActivityRecord> {
             disk_read_bytes: p.disk_usage().read_bytes,
             disk_write_bytes: p.disk_usage().written_bytes,
             start_time: p.start_time(),
-            command: p.cmd().iter().map(|s| s.to_string_lossy().to_string()).collect::<Vec<_>>().join(" "),
+            command: p
+                .cmd()
+                .iter()
+                .map(|s| s.to_string_lossy().to_string())
+                .collect::<Vec<_>>()
+                .join(" "),
         })
         .collect();
 
@@ -35,10 +40,16 @@ pub fn collect_activity_snapshot() -> Result<ActivityRecord> {
             .partial_cmp(&a.cpu_usage)
             .unwrap_or(std::cmp::Ordering::Equal)
     });
-    let top_cpu = processes.first().map(|p| p.name.clone()).unwrap_or_default();
+    let top_cpu = processes
+        .first()
+        .map(|p| p.name.clone())
+        .unwrap_or_default();
 
     processes.sort_by(|a, b| b.memory_bytes.cmp(&a.memory_bytes));
-    let top_mem = processes.first().map(|p| p.name.clone()).unwrap_or_default();
+    let top_mem = processes
+        .first()
+        .map(|p| p.name.clone())
+        .unwrap_or_default();
 
     let top_processes: Vec<ProcessSnapshot> = processes.into_iter().take(20).collect();
     let process_count = sys.processes().len();

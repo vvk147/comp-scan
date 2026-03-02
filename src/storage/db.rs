@@ -23,12 +23,10 @@ impl Database {
         let data_dir = dirs::data_local_dir()
             .unwrap_or_else(|| PathBuf::from("."))
             .join("compscan");
-        std::fs::create_dir_all(&data_dir)
-            .context("Failed to create data directory")?;
+        std::fs::create_dir_all(&data_dir).context("Failed to create data directory")?;
 
         let db_path = data_dir.join("compscan.redb");
-        let db = RedbDatabase::create(&db_path)
-            .context("Failed to open database")?;
+        let db = RedbDatabase::create(&db_path).context("Failed to open database")?;
 
         let instance = Self {
             inner: Arc::new(db),

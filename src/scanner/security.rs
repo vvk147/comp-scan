@@ -87,7 +87,10 @@ fn check_ssh_keys(findings: &mut Vec<SecurityFinding>) {
                                     severity: FindingSeverity::High,
                                     category: "SSH".into(),
                                     title: format!("Insecure permissions on {name}"),
-                                    detail: format!("Key file has mode {:o}, should be 600", mode & 0o777),
+                                    detail: format!(
+                                        "Key file has mode {:o}, should be 600",
+                                        mode & 0o777
+                                    ),
                                     remediation: format!("chmod 600 {}", path.display()),
                                 });
                             }
@@ -101,7 +104,10 @@ fn check_ssh_keys(findings: &mut Vec<SecurityFinding>) {
     let auth_keys = ssh_dir.join("authorized_keys");
     if auth_keys.exists() {
         if let Ok(content) = std::fs::read_to_string(&auth_keys) {
-            let key_count = content.lines().filter(|l| !l.trim().is_empty() && !l.starts_with('#')).count();
+            let key_count = content
+                .lines()
+                .filter(|l| !l.trim().is_empty() && !l.starts_with('#'))
+                .count();
             if key_count > 10 {
                 findings.push(SecurityFinding {
                     severity: FindingSeverity::Medium,
@@ -123,7 +129,10 @@ fn check_sensitive_files(findings: &mut Vec<SecurityFinding>) {
         (".aws/credentials", "AWS credentials file"),
         (".netrc", "Network credentials file"),
         (".npmrc", "NPM config may contain tokens"),
-        (".docker/config.json", "Docker config may contain registry creds"),
+        (
+            ".docker/config.json",
+            "Docker config may contain registry creds",
+        ),
     ];
 
     for (path, description) in &sensitive {
@@ -184,7 +193,8 @@ fn check_firewall(findings: &mut Vec<SecurityFinding>) {
                     category: "Firewall".into(),
                     title: "macOS firewall is disabled".into(),
                     detail: "System firewall is not active".into(),
-                    remediation: "Enable firewall in System Preferences > Security & Privacy".into(),
+                    remediation: "Enable firewall in System Preferences > Security & Privacy"
+                        .into(),
                 });
             }
         }
@@ -192,9 +202,7 @@ fn check_firewall(findings: &mut Vec<SecurityFinding>) {
 
     #[cfg(target_os = "linux")]
     {
-        let output = std::process::Command::new("ufw")
-            .arg("status")
-            .output();
+        let output = std::process::Command::new("ufw").arg("status").output();
 
         if let Ok(output) = output {
             let stdout = String::from_utf8_lossy(&output.stdout);

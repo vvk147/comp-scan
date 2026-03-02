@@ -1,3 +1,4 @@
+use anyhow::Result;
 use axum::{
     extract::State,
     http::StatusCode,
@@ -5,12 +6,11 @@ use axum::{
     routing::get,
     Router,
 };
-use anyhow::Result;
 use std::net::SocketAddr;
 use std::sync::Arc;
 
-use crate::storage::Database;
 use super::templates;
+use crate::storage::Database;
 
 #[derive(Clone)]
 struct AppState {

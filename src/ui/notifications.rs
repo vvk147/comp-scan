@@ -18,10 +18,7 @@ pub fn notify(insight: &Insight) {
     #[cfg(target_os = "linux")]
     {
         let _ = std::process::Command::new("notify-send")
-            .args([
-                &format!("CompScan: {}", insight.title),
-                &insight.suggestion,
-            ])
+            .args([&format!("CompScan: {}", insight.title), &insight.suggestion])
             .output();
     }
 

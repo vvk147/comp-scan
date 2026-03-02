@@ -23,7 +23,8 @@ pub fn collect_system_snapshot() -> Result<SystemSnapshot> {
         .collect();
 
     let cpus = sys.cpus();
-    let cpu_brand = cpus.first()
+    let cpu_brand = cpus
+        .first()
         .map(|c| c.brand().to_string())
         .unwrap_or_else(|| "Unknown".into());
 
@@ -52,11 +53,38 @@ pub fn print_summary(snapshot: &SystemSnapshot) {
     println!("  │          System Overview                 │");
     println!("  ├─────────────────────────────────────────┤");
     println!("  │ Host:     {:<30}│", snapshot.hostname);
-    println!("  │ OS:       {:<30}│", format!("{} {}", snapshot.os_name, snapshot.os_version));
-    println!("  │ CPU:      {:<30}│", format!("{} ({} cores)", truncate(&snapshot.cpu_brand, 20), snapshot.cpu_count));
-    println!("  │ Memory:   {:<30}│", format!("{} / {}", ByteSize(snapshot.used_memory_bytes), ByteSize(snapshot.total_memory_bytes)));
-    println!("  │ Swap:     {:<30}│", format!("{} / {}", ByteSize(snapshot.used_swap_bytes), ByteSize(snapshot.total_swap_bytes)));
-    println!("  │ Processes:{:<30}│", format!(" {}", snapshot.process_count));
+    println!(
+        "  │ OS:       {:<30}│",
+        format!("{} {}", snapshot.os_name, snapshot.os_version)
+    );
+    println!(
+        "  │ CPU:      {:<30}│",
+        format!(
+            "{} ({} cores)",
+            truncate(&snapshot.cpu_brand, 20),
+            snapshot.cpu_count
+        )
+    );
+    println!(
+        "  │ Memory:   {:<30}│",
+        format!(
+            "{} / {}",
+            ByteSize(snapshot.used_memory_bytes),
+            ByteSize(snapshot.total_memory_bytes)
+        )
+    );
+    println!(
+        "  │ Swap:     {:<30}│",
+        format!(
+            "{} / {}",
+            ByteSize(snapshot.used_swap_bytes),
+            ByteSize(snapshot.total_swap_bytes)
+        )
+    );
+    println!(
+        "  │ Processes:{:<30}│",
+        format!(" {}", snapshot.process_count)
+    );
     println!("  │ Uptime:   {:<30}│", format_uptime(snapshot.uptime_secs));
     println!("  ├─────────────────────────────────────────┤");
     println!("  │ Disks:                                  │");

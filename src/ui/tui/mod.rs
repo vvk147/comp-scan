@@ -1,7 +1,7 @@
+pub mod actions;
 pub mod app;
 pub mod dashboard;
 pub mod insights;
-pub mod actions;
 pub mod widgets;
 
 use anyhow::Result;
@@ -82,7 +82,7 @@ fn render(f: &mut Frame, app: &App) {
         .direction(Direction::Vertical)
         .constraints([
             Constraint::Length(3), // header
-            Constraint::Min(0),   // content
+            Constraint::Min(0),    // content
             Constraint::Length(1), // footer
         ])
         .split(f.area());

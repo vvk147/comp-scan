@@ -8,7 +8,8 @@ pub fn evaluate_snapshot(snapshot: &SystemSnapshot) -> Vec<Insight> {
     let now = Utc::now();
 
     // Memory pressure rules
-    let mem_pct = snapshot.used_memory_bytes as f64 / snapshot.total_memory_bytes.max(1) as f64 * 100.0;
+    let mem_pct =
+        snapshot.used_memory_bytes as f64 / snapshot.total_memory_bytes.max(1) as f64 * 100.0;
     if mem_pct > 90.0 {
         insights.push(Insight {
             id: Uuid::new_v4().to_string(),
@@ -105,7 +106,8 @@ pub fn evaluate_snapshot(snapshot: &SystemSnapshot) -> Vec<Insight> {
             category: InsightCategory::Performance,
             severity: InsightSeverity::Suggestion,
             title: format!("System has been running for {days} days"),
-            description: "Extended uptime can lead to memory leaks and degraded performance.".into(),
+            description: "Extended uptime can lead to memory leaks and degraded performance."
+                .into(),
             suggestion: "Consider restarting your system to clear accumulated state.".into(),
             action_id: None,
             source: InsightSource::RuleEngine,
@@ -139,7 +141,8 @@ pub fn evaluate_activities(activities: &[ActivityRecord]) -> Vec<Insight> {
     }
 
     // High average CPU
-    let avg_cpu: f32 = activities.iter().map(|a| a.cpu_usage_percent).sum::<f32>() / activities.len() as f32;
+    let avg_cpu: f32 =
+        activities.iter().map(|a| a.cpu_usage_percent).sum::<f32>() / activities.len() as f32;
     if avg_cpu > 70.0 {
         insights.push(Insight {
             id: Uuid::new_v4().to_string(),
@@ -163,8 +166,10 @@ pub fn evaluate_activities(activities: &[ActivityRecord]) -> Vec<Insight> {
             &activities[activities.len() / 2..]
         };
 
-        let recent_avg: f32 = recent.iter().map(|a| a.memory_usage_percent).sum::<f32>() / recent.len() as f32;
-        let older_avg: f32 = older.iter().map(|a| a.memory_usage_percent).sum::<f32>() / older.len().max(1) as f32;
+        let recent_avg: f32 =
+            recent.iter().map(|a| a.memory_usage_percent).sum::<f32>() / recent.len() as f32;
+        let older_avg: f32 =
+            older.iter().map(|a| a.memory_usage_percent).sum::<f32>() / older.len().max(1) as f32;
 
         if recent_avg > older_avg + 10.0 {
             insights.push(Insight {
@@ -176,7 +181,9 @@ pub fn evaluate_activities(activities: &[ActivityRecord]) -> Vec<Insight> {
                 description: format!(
                     "Memory usage increased from {older_avg:.0}% to {recent_avg:.0}% recently."
                 ),
-                suggestion: "Possible memory leak. Check for processes with growing memory footprint.".into(),
+                suggestion:
+                    "Possible memory leak. Check for processes with growing memory footprint."
+                        .into(),
                 action_id: None,
                 source: InsightSource::RuleEngine,
             });
@@ -184,9 +191,12 @@ pub fn evaluate_activities(activities: &[ActivityRecord]) -> Vec<Insight> {
     }
 
     // Dominant process
-    let mut process_freq: std::collections::HashMap<String, usize> = std::collections::HashMap::new();
+    let mut process_freq: std::collections::HashMap<String, usize> =
+        std::collections::HashMap::new();
     for activity in activities {
-        *process_freq.entry(activity.top_cpu_process.clone()).or_default() += 1;
+        *process_freq
+            .entry(activity.top_cpu_process.clone())
+            .or_default() += 1;
     }
     if let Some((proc_name, count)) = process_freq.iter().max_by_key(|(_, c)| *c) {
         let pct = *count as f32 / activities.len() as f32 * 100.0;

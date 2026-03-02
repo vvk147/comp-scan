@@ -115,6 +115,7 @@ fn std_dev(values: &[f32], mean: f32) -> f32 {
     if values.len() < 2 {
         return 0.0;
     }
-    let variance: f32 = values.iter().map(|v| (v - mean).powi(2)).sum::<f32>() / (values.len() - 1) as f32;
+    let variance: f32 =
+        values.iter().map(|v| (v - mean).powi(2)).sum::<f32>() / (values.len() - 1) as f32;
     variance.sqrt()
 }

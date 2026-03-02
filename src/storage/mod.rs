@@ -1,6 +1,6 @@
 pub mod db;
-pub mod models;
 pub mod encryption;
+pub mod models;
 
 pub use db::Database;
 
@@ -20,7 +20,14 @@ pub fn show_config(db: &Database) -> Result<()> {
     println!("Ollama endpoint:    {}", config.ollama_endpoint);
     println!("Ollama model:       {}", config.ollama_model);
     println!("Web dashboard port: {}", config.web_port);
-    println!("Encryption:         {}", if config.encryption_enabled { "enabled" } else { "disabled" });
+    println!(
+        "Encryption:         {}",
+        if config.encryption_enabled {
+            "enabled"
+        } else {
+            "disabled"
+        }
+    );
     println!("Data directory:     {}", config.data_dir.display());
     println!("\nTrust Levels:");
     println!("  Low risk:    auto-approve");

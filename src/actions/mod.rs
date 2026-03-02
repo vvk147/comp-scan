@@ -1,15 +1,15 @@
-pub mod executor;
-pub mod permissions;
 pub mod cleanup;
+pub mod executor;
 pub mod optimization;
+pub mod permissions;
 pub mod workflow;
 
 use anyhow::{bail, Result};
 use chrono::Utc;
 use uuid::Uuid;
 
-use crate::storage::Database;
 use crate::storage::models::*;
+use crate::storage::Database;
 
 pub async fn execute_action(db: &Database, action_id: &str, force: bool) -> Result<()> {
     let action = match db.get_action(action_id)? {
@@ -18,7 +18,9 @@ pub async fn execute_action(db: &Database, action_id: &str, force: bool) -> Resu
             if let Some(a) = get_builtin_action(action_id) {
                 a
             } else {
-                bail!("Unknown action: {action_id}. Run `compscan report` to see available actions.");
+                bail!(
+                    "Unknown action: {action_id}. Run `compscan report` to see available actions."
+                );
             }
         }
     };

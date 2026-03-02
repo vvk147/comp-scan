@@ -60,7 +60,8 @@ pub fn disk_cleanup_action() -> Action {
     Action {
         id: "cleanup-disk".into(),
         title: "Full disk cleanup".into(),
-        description: "Comprehensive cleanup: caches, temp files, logs, and package manager caches.".into(),
+        description: "Comprehensive cleanup: caches, temp files, logs, and package manager caches."
+            .into(),
         risk_level: RiskLevel::Medium,
         category: InsightCategory::DiskSpace,
         command: ActionCommand::ShellCommand(

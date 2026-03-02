@@ -1,10 +1,10 @@
 pub mod activity;
-pub mod patterns;
 pub mod coding;
 pub mod habits;
+pub mod patterns;
 
-use anyhow::Result;
 use crate::storage::Database;
+use anyhow::Result;
 use tokio::signal;
 
 pub async fn run_observer(db: &Database, interval_secs: u64) -> Result<()> {
@@ -42,7 +42,8 @@ pub async fn run_observer(db: &Database, interval_secs: u64) -> Result<()> {
     let coding_handle = tokio::spawn({
         let db = db.clone();
         async move {
-            let mut ticker = tokio::time::interval(std::time::Duration::from_secs(interval_secs * 4));
+            let mut ticker =
+                tokio::time::interval(std::time::Duration::from_secs(interval_secs * 4));
             loop {
                 ticker.tick().await;
                 if let Ok(Some(insight)) = coding::check_coding_activity() {

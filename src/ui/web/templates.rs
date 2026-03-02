@@ -37,7 +37,13 @@ td{padding:0.4rem 0.5rem;border-bottom:1px solid var(--border)}
 </head>
 <body>
 <h1>CompScan Dashboard</h1>
-<p class="subtitle"><span id="status-dot" class="online"></span><span id="status-text">Loading...</span></p>
+<p class="subtitle"><span id="status-dot" class="online"></span><span id="status-text">Loading...</span>
+  <span style="margin-left:1rem;font-size:0.8rem;">
+    <a href="https://github.com/vvk147/comp-scan" target="_blank" rel="noopener" style="color:var(--cyan);text-decoration:none;">★ Star</a>
+    ·
+    <a href="https://github.com/sponsors/vvk147" target="_blank" rel="noopener" style="color:var(--cyan);text-decoration:none;">Sponsor</a>
+  </span>
+</p>
 
 <div class="grid">
   <div class="card" id="system-card"><h2>System</h2><div id="system-info" class="empty">Loading...</div></div>
@@ -105,6 +111,11 @@ async function refresh() { await Promise.all([loadStatus(), loadSnapshot(), load
 refresh();
 setInterval(refresh, 5000);
 </script>
+<footer style="margin-top:1.5rem;padding-top:0.75rem;border-top:1px solid var(--border);color:var(--dim);font-size:0.8rem;">
+  <a href="https://github.com/vvk147/comp-scan" target="_blank" rel="noopener" style="color:var(--cyan);text-decoration:none;">Star on GitHub</a> ·
+  <a href="https://github.com/sponsors/vvk147" target="_blank" rel="noopener" style="color:var(--cyan);text-decoration:none;">Sponsor</a>
+  — CompScan is free and open source. Your support helps keep it maintained.
+</footer>
 </body>
 </html>"##.to_string()
 }

@@ -1,8 +1,8 @@
 use chrono::{Timelike, Utc};
 use uuid::Uuid;
 
-use crate::storage::Database;
 use crate::storage::models::{Insight, InsightCategory, InsightSeverity, InsightSource};
+use crate::storage::Database;
 
 pub fn check_habits(db: &Database) -> Vec<Insight> {
     let mut insights = Vec::new();
@@ -10,15 +10,20 @@ pub fn check_habits(db: &Database) -> Vec<Insight> {
     let now = Utc::now();
     let hour = now.hour();
 
-    if hour >= 23 || hour < 5 {
+    if !(5..23).contains(&hour) {
         insights.push(Insight {
             id: Uuid::new_v4().to_string(),
             timestamp: now,
             category: InsightCategory::Habits,
             severity: InsightSeverity::Suggestion,
             title: "Late night computer usage detected".into(),
-            description: format!("It's {}:{}0 — extended screen time late at night can disrupt sleep patterns.", hour, now.minute() / 10),
-            suggestion: "Consider winding down. Enable night mode or schedule a shutdown timer.".into(),
+            description: format!(
+                "It's {}:{}0 — extended screen time late at night can disrupt sleep patterns.",
+                hour,
+                now.minute() / 10
+            ),
+            suggestion: "Consider winding down. Enable night mode or schedule a shutdown timer."
+                .into(),
             action_id: None,
             source: InsightSource::RuleEngine,
         });
@@ -50,15 +55,23 @@ pub fn check_habits(db: &Database) -> Vec<Insight> {
             let recent_two = &activities[..2];
             let rapid_app_switching = recent_two.iter().all(|a| a.process_count > 100);
             if rapid_app_switching {
-                let avg_processes: f32 = recent_two.iter().map(|a| a.process_count as f32).sum::<f32>() / 2.0;
+                let avg_processes: f32 = recent_two
+                    .iter()
+                    .map(|a| a.process_count as f32)
+                    .sum::<f32>()
+                    / 2.0;
                 insights.push(Insight {
                     id: Uuid::new_v4().to_string(),
                     timestamp: now,
                     category: InsightCategory::Productivity,
                     severity: InsightSeverity::Info,
                     title: format!("High process count: {avg_processes:.0} average"),
-                    description: "Running many processes simultaneously may impact performance and focus.".into(),
-                    suggestion: "Close unused applications to free resources and reduce distractions.".into(),
+                    description:
+                        "Running many processes simultaneously may impact performance and focus."
+                            .into(),
+                    suggestion:
+                        "Close unused applications to free resources and reduce distractions."
+                            .into(),
                     action_id: None,
                     source: InsightSource::RuleEngine,
                 });

@@ -1,6 +1,6 @@
-use anyhow::Result;
-use crate::storage::Database;
 use crate::storage::models::*;
+use crate::storage::Database;
+use anyhow::Result;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Tab {

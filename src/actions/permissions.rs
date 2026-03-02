@@ -24,14 +24,19 @@ pub fn check_permission(action: &Action, force: bool) -> Result<bool> {
         RiskLevel::High => {
             println!("  \x1b[33m[HIGH RISK] This action makes significant changes.\x1b[0m");
             println!("  Impact: {}", action.estimated_impact);
-            println!("  Reversible: {}", if action.reversible { "yes" } else { "NO" });
+            println!(
+                "  Reversible: {}",
+                if action.reversible { "yes" } else { "NO" }
+            );
             println!();
             prompt_confirm("  Type 'yes' to confirm: ")
         }
         RiskLevel::Critical => {
             println!("  \x1b[31m[BLOCKED] This action is classified as critical risk.\x1b[0m");
             println!("  CompScan will not execute critical-risk actions automatically.");
-            println!("  Manual execution required: review the suggested command and run it yourself.");
+            println!(
+                "  Manual execution required: review the suggested command and run it yourself."
+            );
             Ok(false)
         }
     }

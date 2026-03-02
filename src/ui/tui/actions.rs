@@ -14,10 +14,22 @@ pub fn render(f: &mut Frame, area: Rect, app: &App) {
             Line::from("No pending actions."),
             Line::from(""),
             Line::from("Built-in actions available via CLI:"),
-            Line::from(Span::styled("  compscan act cleanup-caches", Style::default().fg(Color::Cyan))),
-            Line::from(Span::styled("  compscan act cleanup-temp", Style::default().fg(Color::Cyan))),
-            Line::from(Span::styled("  compscan act cleanup-logs", Style::default().fg(Color::Cyan))),
-            Line::from(Span::styled("  compscan act cleanup-disk", Style::default().fg(Color::Cyan))),
+            Line::from(Span::styled(
+                "  compscan act cleanup-caches",
+                Style::default().fg(Color::Cyan),
+            )),
+            Line::from(Span::styled(
+                "  compscan act cleanup-temp",
+                Style::default().fg(Color::Cyan),
+            )),
+            Line::from(Span::styled(
+                "  compscan act cleanup-logs",
+                Style::default().fg(Color::Cyan),
+            )),
+            Line::from(Span::styled(
+                "  compscan act cleanup-disk",
+                Style::default().fg(Color::Cyan),
+            )),
         ];
         let paragraph = Paragraph::new(lines).block(block);
         f.render_widget(paragraph, area);

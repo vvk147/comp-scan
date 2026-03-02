@@ -1,8 +1,8 @@
-use anyhow::Result;
-use crate::storage::Database;
-use crate::storage::models::*;
 use super::ollama::OllamaClient;
 use super::prompts;
+use crate::storage::models::*;
+use crate::storage::Database;
+use anyhow::Result;
 
 pub struct HybridAI {
     ollama: OllamaClient,
@@ -86,10 +86,13 @@ impl HybridAI {
         }
 
         if !activities.is_empty() {
-            let avg_cpu: f32 =
-                activities.iter().map(|a| a.cpu_usage_percent).sum::<f32>() / activities.len() as f32;
-            let avg_mem: f32 =
-                activities.iter().map(|a| a.memory_usage_percent).sum::<f32>() / activities.len() as f32;
+            let avg_cpu: f32 = activities.iter().map(|a| a.cpu_usage_percent).sum::<f32>()
+                / activities.len() as f32;
+            let avg_mem: f32 = activities
+                .iter()
+                .map(|a| a.memory_usage_percent)
+                .sum::<f32>()
+                / activities.len() as f32;
 
             context.push_str(&format!(
                 "\nActivity ({} samples): Avg CPU {:.0}%, Avg Memory {:.0}%\n",
@@ -121,9 +124,12 @@ impl HybridAI {
 }
 
 fn should_use_llm(rule_insights: &[Insight]) -> bool {
-    let has_complex_issues = rule_insights
-        .iter()
-        .any(|i| matches!(i.severity, InsightSeverity::Critical | InsightSeverity::Warning));
+    let has_complex_issues = rule_insights.iter().any(|i| {
+        matches!(
+            i.severity,
+            InsightSeverity::Critical | InsightSeverity::Warning
+        )
+    });
 
     let enough_data = rule_insights.len() >= 3;
 
@@ -139,7 +145,8 @@ fn parse_llm_response(response: &str) -> Vec<Insight> {
             continue;
         }
 
-        let trimmed = line.trim_start_matches(|c: char| c.is_numeric() || c == '.' || c == ')' || c == ' ');
+        let trimmed =
+            line.trim_start_matches(|c: char| c.is_numeric() || c == '.' || c == ')' || c == ' ');
         if trimmed.len() < 10 {
             continue;
         }

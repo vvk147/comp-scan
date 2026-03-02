@@ -1,5 +1,8 @@
 # CompScan
 
+[![GitHub stars](https://img.shields.io/github/stars/vvk147/comp-scan?style=flat-square&label=Stars)](https://github.com/vvk147/comp-scan/stargazers)
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/vvk147?style=flat-square&label=Sponsor)](https://github.com/sponsors/vvk147)
+
 **Your computer's personal health doctor. Fully local. Fully private. Fully free.**
 
 ```
@@ -189,6 +192,21 @@ Built in Rust. 3 MB binary. Cross-platform (macOS, Linux, Windows). Single datab
 **How do I update?** `cd ~/.compscan && git pull && cargo install --path .`
 
 **How do I uninstall?** `cargo uninstall compscan && rm -rf ~/.compscan`
+
+---
+
+## Support this project
+
+CompScan is free and open source. If it helps you, consider supporting its development:
+
+| Way to support | What you get |
+|----------------|--------------|
+| **[Star the repo](https://github.com/vvk147/comp-scan/stargazers)** | Free — helps others discover CompScan and motivates maintenance. |
+| **[GitHub Sponsors](https://github.com/sponsors/vvk147)** | Recurring or one-time — direct support, optional sponsor recognition. |
+| **[Open Collective](https://opencollective.com/vvk-147)** | One-time or recurring — transparent budget, optional sponsor recognition. |
+| **[Buy Me a Coffee](https://buymeacoffee.com/vvk147)** | One-time tip — quick way to say thanks. |
+
+All support is optional and appreciated. The project remains fully functional and free forever (MIT).
 
 ---
 

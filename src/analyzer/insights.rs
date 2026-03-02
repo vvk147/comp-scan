@@ -6,8 +6,14 @@ pub fn print_report(insights: &[Insight], snapshot: Option<&SystemSnapshot>) {
     println!("  ╚═══════════════════════════════════════════╝\n");
 
     if let Some(snap) = snapshot {
-        println!("  System: {} ({} {})", snap.hostname, snap.os_name, snap.os_version);
-        println!("  Scan time: {}\n", snap.timestamp.format("%Y-%m-%d %H:%M:%S UTC"));
+        println!(
+            "  System: {} ({} {})",
+            snap.hostname, snap.os_name, snap.os_version
+        );
+        println!(
+            "  Scan time: {}\n",
+            snap.timestamp.format("%Y-%m-%d %H:%M:%S UTC")
+        );
     }
 
     if insights.is_empty() {
@@ -17,13 +23,30 @@ pub fn print_report(insights: &[Insight], snapshot: Option<&SystemSnapshot>) {
         return;
     }
 
-    let critical: Vec<&Insight> = insights.iter().filter(|i| i.severity == InsightSeverity::Critical).collect();
-    let warnings: Vec<&Insight> = insights.iter().filter(|i| i.severity == InsightSeverity::Warning).collect();
-    let suggestions: Vec<&Insight> = insights.iter().filter(|i| i.severity == InsightSeverity::Suggestion).collect();
-    let info: Vec<&Insight> = insights.iter().filter(|i| i.severity == InsightSeverity::Info).collect();
+    let critical: Vec<&Insight> = insights
+        .iter()
+        .filter(|i| i.severity == InsightSeverity::Critical)
+        .collect();
+    let warnings: Vec<&Insight> = insights
+        .iter()
+        .filter(|i| i.severity == InsightSeverity::Warning)
+        .collect();
+    let suggestions: Vec<&Insight> = insights
+        .iter()
+        .filter(|i| i.severity == InsightSeverity::Suggestion)
+        .collect();
+    let info: Vec<&Insight> = insights
+        .iter()
+        .filter(|i| i.severity == InsightSeverity::Info)
+        .collect();
 
-    println!("  Summary: {} critical, {} warnings, {} suggestions, {} info\n",
-        critical.len(), warnings.len(), suggestions.len(), info.len());
+    println!(
+        "  Summary: {} critical, {} warnings, {} suggestions, {} info\n",
+        critical.len(),
+        warnings.len(),
+        suggestions.len(),
+        info.len()
+    );
 
     if !critical.is_empty() {
         println!("  \x1b[31m--- CRITICAL ---\x1b[0m");
@@ -80,7 +103,10 @@ fn print_insight(insight: &Insight) {
         InsightSource::Ollama => "ai",
     };
 
-    println!("  {icon} [{:>11}] [{}] {}", insight.category, source, insight.title);
+    println!(
+        "  {icon} [{:>11}] [{}] {}",
+        insight.category, source, insight.title
+    );
     println!("     {}", insight.description);
     println!("     → {}", insight.suggestion);
 

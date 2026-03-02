@@ -25,6 +25,7 @@ struct GenerateOptions {
 #[derive(Deserialize)]
 struct GenerateResponse {
     response: String,
+    #[allow(dead_code)]
     done: bool,
 }
 

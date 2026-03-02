@@ -1,11 +1,11 @@
-pub mod system;
-pub mod processes;
 pub mod filesystem;
-pub mod startup;
+pub mod processes;
 pub mod security;
+pub mod startup;
+pub mod system;
 
-use anyhow::Result;
 use crate::storage::Database;
+use anyhow::Result;
 use chrono::Utc;
 use uuid::Uuid;
 
@@ -39,10 +39,21 @@ pub async fn run_scan(db: &Database, full: bool) -> Result<()> {
         id: Uuid::new_v4().to_string(),
         timestamp: Utc::now(),
         active_processes: procs.top_by_cpu.clone(),
-        cpu_usage_percent: snapshot.used_memory_bytes as f32 / snapshot.total_memory_bytes as f32 * 100.0,
-        memory_usage_percent: snapshot.used_memory_bytes as f32 / snapshot.total_memory_bytes as f32 * 100.0,
-        top_cpu_process: procs.top_by_cpu.first().map(|p| p.name.clone()).unwrap_or_default(),
-        top_memory_process: procs.top_by_memory.first().map(|p| p.name.clone()).unwrap_or_default(),
+        cpu_usage_percent: snapshot.used_memory_bytes as f32 / snapshot.total_memory_bytes as f32
+            * 100.0,
+        memory_usage_percent: snapshot.used_memory_bytes as f32
+            / snapshot.total_memory_bytes as f32
+            * 100.0,
+        top_cpu_process: procs
+            .top_by_cpu
+            .first()
+            .map(|p| p.name.clone())
+            .unwrap_or_default(),
+        top_memory_process: procs
+            .top_by_memory
+            .first()
+            .map(|p| p.name.clone())
+            .unwrap_or_default(),
         process_count: procs.total_count,
     };
     db.save_activity(&activity)?;

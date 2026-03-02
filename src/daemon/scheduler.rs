@@ -11,6 +11,12 @@ struct ScheduledTask {
     task: Box<dyn Fn() + Send + Sync>,
 }
 
+impl Default for TaskScheduler {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl TaskScheduler {
     pub fn new() -> Self {
         Self { tasks: Vec::new() }

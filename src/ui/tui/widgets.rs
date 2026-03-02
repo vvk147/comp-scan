@@ -25,10 +25,7 @@ pub fn render_header(f: &mut Frame, area: Rect, app: &App) {
     let tabs = Tabs::new(titles)
         .block(
             Block::default()
-                .title(format!(
-                    " CompScan v{} ",
-                    env!("CARGO_PKG_VERSION")
-                ))
+                .title(format!(" CompScan v{} ", env!("CARGO_PKG_VERSION")))
                 .borders(Borders::ALL)
                 .border_style(Style::default().fg(Color::White)),
         )

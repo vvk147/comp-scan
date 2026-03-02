@@ -17,7 +17,8 @@ pub fn detect_patterns(activities: &[ActivityRecord]) -> Option<UsagePattern> {
     let mut hour_counts = [0u32; 24];
     let mut total_cpu = 0.0f32;
     let mut total_mem = 0.0f32;
-    let mut app_frequency: std::collections::HashMap<String, usize> = std::collections::HashMap::new();
+    let mut app_frequency: std::collections::HashMap<String, usize> =
+        std::collections::HashMap::new();
 
     for activity in activities {
         let hour = activity.timestamp.hour() as usize;
@@ -27,7 +28,9 @@ pub fn detect_patterns(activities: &[ActivityRecord]) -> Option<UsagePattern> {
         total_cpu += activity.cpu_usage_percent;
         total_mem += activity.memory_usage_percent;
 
-        *app_frequency.entry(activity.top_cpu_process.clone()).or_default() += 1;
+        *app_frequency
+            .entry(activity.top_cpu_process.clone())
+            .or_default() += 1;
     }
 
     let peak_hour = hour_counts

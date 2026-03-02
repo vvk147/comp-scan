@@ -29,7 +29,12 @@ pub fn analyze_processes() -> Result<ProcessReport> {
             disk_read_bytes: p.disk_usage().read_bytes,
             disk_write_bytes: p.disk_usage().written_bytes,
             start_time: p.start_time(),
-            command: p.cmd().iter().map(|s| s.to_string_lossy().to_string()).collect::<Vec<_>>().join(" "),
+            command: p
+                .cmd()
+                .iter()
+                .map(|s| s.to_string_lossy().to_string())
+                .collect::<Vec<_>>()
+                .join(" "),
         })
         .collect();
 
@@ -41,7 +46,11 @@ pub fn analyze_processes() -> Result<ProcessReport> {
         .filter(|p| matches!(p.status(), sysinfo::ProcessStatus::Dead))
         .count();
 
-    all.sort_by(|a, b| b.cpu_usage.partial_cmp(&a.cpu_usage).unwrap_or(std::cmp::Ordering::Equal));
+    all.sort_by(|a, b| {
+        b.cpu_usage
+            .partial_cmp(&a.cpu_usage)
+            .unwrap_or(std::cmp::Ordering::Equal)
+    });
     let top_by_cpu: Vec<ProcessSnapshot> = all.iter().take(10).cloned().collect();
 
     all.sort_by(|a, b| b.memory_bytes.cmp(&a.memory_bytes));
@@ -65,7 +74,10 @@ pub fn analyze_processes() -> Result<ProcessReport> {
 pub fn print_summary(report: &ProcessReport) {
     println!("  Total processes: {}", report.total_count);
     if report.zombie_count > 0 {
-        println!("  Zombie processes: {} (potential cleanup)", report.zombie_count);
+        println!(
+            "  Zombie processes: {} (potential cleanup)",
+            report.zombie_count
+        );
     }
 
     if !report.resource_hogs.is_empty() {
@@ -73,7 +85,10 @@ pub fn print_summary(report: &ProcessReport) {
         for p in &report.resource_hogs {
             println!(
                 "    - {} (PID {}) | CPU: {:.1}% | Mem: {}",
-                p.name, p.pid, p.cpu_usage, ByteSize(p.memory_bytes)
+                p.name,
+                p.pid,
+                p.cpu_usage,
+                ByteSize(p.memory_bytes)
             );
         }
     }

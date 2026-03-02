@@ -19,8 +19,7 @@ impl EncryptionEngine {
         let machine_id = get_machine_id()?;
         let salt = derive_stable_salt(&machine_id);
         let key = derive_key(machine_id.as_bytes(), &salt)?;
-        let cipher = Aes256Gcm::new_from_slice(&key)
-            .context("Failed to create cipher")?;
+        let cipher = Aes256Gcm::new_from_slice(&key).context("Failed to create cipher")?;
         Ok(Self { cipher })
     }
 
@@ -29,7 +28,9 @@ impl EncryptionEngine {
         rand::thread_rng().fill_bytes(&mut nonce_bytes);
         let nonce = Nonce::from_slice(&nonce_bytes);
 
-        let ciphertext = self.cipher.encrypt(nonce, plaintext)
+        let ciphertext = self
+            .cipher
+            .encrypt(nonce, plaintext)
             .map_err(|e| anyhow::anyhow!("Encryption failed: {e}"))?;
 
         let mut output = Vec::with_capacity(NONCE_LEN + ciphertext.len());
@@ -45,7 +46,8 @@ impl EncryptionEngine {
         let (nonce_bytes, ciphertext) = data.split_at(NONCE_LEN);
         let nonce = Nonce::from_slice(nonce_bytes);
 
-        self.cipher.decrypt(nonce, ciphertext)
+        self.cipher
+            .decrypt(nonce, ciphertext)
             .map_err(|e| anyhow::anyhow!("Decryption failed: {e}"))
     }
 }

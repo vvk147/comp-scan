@@ -1,9 +1,9 @@
+pub mod insights;
 pub mod rules;
 pub mod statistics;
-pub mod insights;
 
-use anyhow::Result;
 use crate::storage::Database;
+use anyhow::Result;
 
 pub async fn generate_report(db: &Database, json_output: bool) -> Result<()> {
     let activities = db.get_recent_activities(200)?;
